@@ -1,9 +1,11 @@
 import Vuex from "vuex";
 import Customer from "./customer";
+import Wallet from "./wallet";
 
 new Vuex.Store({
   modules: {
-    Customer
+    Customer,
+    Wallet
   }
 });
 

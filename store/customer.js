@@ -1,3 +1,5 @@
+import Wallet from "./wallet";
+
 export default {
   state: {
     data: {
@@ -38,10 +40,10 @@ export default {
 
       commit("setNotification", notification);
 
-      let res = await this.$axios.post(`${process.env.API_URL}/customer`, data);
-      if (res.status === 200) {
-        commit("setNotification", res.data);
-      }
+      // let res = await this.$axios.post(`${process.env.API_URL}/customer`, data);
+      // if (res.status === 200) {
+      //   commit("setNotification", res.data);
+      // }
     }
   }
 };

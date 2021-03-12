@@ -1,4 +1,12 @@
 <template>
+<div>
+
+    <Notification
+    v-if="notification.ifNotification"
+    :type="notification.type"
+    :message="notification.message"
+    :errorsInputs="notification.errors_response"
+  />
 
   <v-form
     ref="form"
@@ -40,6 +48,7 @@
       Consultar saldo
     </v-btn>
   </v-form>
+</div>
 </template>
 
 <script>
@@ -56,8 +65,16 @@
         v => !!v || 'Document is required',
         v => (v && v.length <= 10) || 'Document must be less than 10 characters'
       ],
+      notification: {
+        ifNotification: false,
+        type: '',
+        message: '',
+        errors_response:null
+      },
     }),
-
+    components: {
+      Notification,
+    },
     methods: {
       validate () {
         if (this.$refs.form.validate()) {
@@ -67,8 +84,15 @@
       reset () {
         this.$refs.form.reset()
       },
-      submit () {
-        this.$refs.form.submit()
+      async submit () {
+        if(this.$refs.form.validate()) {
+          let data = { 
+            document: this.document,
+            phone: this.phone,
+          };
+          this.$store.commit('wallet/setData', data);
+          this.$store.dispatch('wallet/balance');
+        }
       }
     }
   }
