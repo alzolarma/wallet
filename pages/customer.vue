@@ -111,6 +111,14 @@
     components: {
       Notification,
     },
+    mounted() {
+      this.$store.watch(
+        state => state.customer.notification,
+        notification => {
+          this.notification = notification;
+        }
+      )
+    },
     methods: {
       validate () {
         if (this.$refs.form.validate()) {
@@ -130,16 +138,13 @@
       },
       async submit () {
         if(this.$refs.form.validate()) {
-          let data = {data: 'data'};
-          this.setNotification(true, 'success', 'Mensaje', null);
-
-          // const res = this.$axios.post(`${process.env.API_URL}/customer`, data)
-          // .then((res) => {
-          //     this.setNotification(true, 'success', 'Mensaje', null);
-          // })
-          // .catch(error => {
-          //     this.setNotification(true, 'error', error.response.data.msg, error.response.data.errors)
-          // });
+          let data = { 
+            name: this.name,
+            document: this.document,
+            phone: this.phone,
+            email: this.email,
+          };
+          this.$store.dispatch('customer/store', data);
         }
       }
     }
