@@ -89,8 +89,13 @@ export default {
         },
         {
           icon: "mdi-chart-bubble",
+          title: "Consultar saldo",
+          to: "/balance"
+        },
+        {
+          icon: "mdi-chart-bubble",
           title: "Pagar",
-          to: "/customer"
+          to: "/pay_up"
         }
       ],
       miniVariant: false,

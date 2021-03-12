@@ -6,17 +6,9 @@
     lazy-validation
   >
 
-     <h3> Registrar Usuario </h3>
+     <h3> Pagar </h3>
 
     <v-divider></v-divider>
-
-    <v-text-field
-      v-model="name"
-      :counter="10"
-      :rules="nameRules"
-      label="Nombre"
-      required
-    ></v-text-field>
 
     <v-text-field
       v-model="document"
@@ -35,19 +27,12 @@
     ></v-text-field>
 
     <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
+      v-model="mount"
+      :counter="10"
+      :rules="mountRules"
+      label="Monto a pagar"
       required
     ></v-text-field>
-
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="validate"
-    >
-      Validar
-    </v-btn>
 
     <v-btn
       color="error"
@@ -60,7 +45,7 @@
       color="primary"
       @click="submit"
     >
-      Enviar
+      Realizar pago
     </v-btn>
   </v-form>
 </template>
@@ -69,25 +54,20 @@
   export default {
     data: () => ({
       valid: true,
-      name: '',
-      nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-      ],
       phone: '',
       phoneRules: [
         v => !!v || 'Phone is required',
         v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
       ],
+      mount: '',
+      mpountRules: [
+        v => !!v || 'Monto is required',
+        v => (v && v.length <= 10) || 'Document must be less than 10 characters'
+      ],
       document: '',
       documentRules: [
         v => !!v || 'Document is required',
         v => (v && v.length <= 10) || 'Document must be less than 10 characters'
-      ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
       ],
     }),
 
