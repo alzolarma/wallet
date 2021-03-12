@@ -85,7 +85,7 @@ export default {
         {
           icon: "mdi-chart-bubble",
           title: "Recargar Billetera",
-          to: "/customer"
+          to: "/recharge_wallet"
         },
         {
           icon: "mdi-chart-bubble",
