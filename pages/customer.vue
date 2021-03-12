@@ -1,4 +1,11 @@
 <template>
+<div>
+  <Notification
+    v-if="notification.ifNotification"
+    :type="notification.type"
+    :message="notification.message"
+    :errorsInputs="notification.errors_response"
+  />
 
   <v-form
     ref="form"
@@ -63,45 +70,77 @@
       Enviar
     </v-btn>
   </v-form>
+</div>
 </template>
 
 <script>
+
+  import Notification from '~/components/utils/Notification.vue'
+  
   export default {
     data: () => ({
       valid: true,
-      name: '',
+      name: 'maria',
       nameRules: [
         v => !!v || 'Name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
       ],
-      phone: '',
+      phone: '042455566',
       phoneRules: [
         v => !!v || 'Phone is required',
         v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
       ],
-      document: '',
+      document: '454545',
       documentRules: [
         v => !!v || 'Document is required',
         v => (v && v.length <= 10) || 'Document must be less than 10 characters'
       ],
-      email: '',
+      email: 'alzolarma@gmail.com',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+/.test(v) || 'E-mail must be valid'
       ],
+      notification: {
+        ifNotification: false,
+        type: '',
+        message: '',
+        errors_response:null
+      },
     }),
 
+    components: {
+      Notification,
+    },
     methods: {
       validate () {
         if (this.$refs.form.validate()) {
-          this.snackbar = true
+          this.snackbar = true;
+          return true;
         }
+        return false;
       },
       reset () {
         this.$refs.form.reset()
       },
-      submit () {
-        this.$refs.form.submit()
+      setNotification(visibility, type, message, errors) {
+        this.notification.ifNotification = visibility;
+        this.notification.type = type;
+        this.notification.message = message;
+        this.notification.errors_response = errors;
+      },
+      async submit () {
+        if(this.$refs.form.validate()) {
+          let data = {data: 'data'};
+          this.setNotification(true, 'success', 'Mensaje', null);
+
+          // const res = this.$axios.post(`${process.env.API_URL}/customer`, data)
+          // .then((res) => {
+          //     this.setNotification(true, 'success', 'Mensaje', null);
+          // })
+          // .catch(error => {
+          //     this.setNotification(true, 'error', error.response.data.msg, error.response.data.errors)
+          // });
+        }
       }
     }
   }
