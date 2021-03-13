@@ -33,17 +33,23 @@ export default {
     async store({ commit }, data) {
       let notification = {
         ifNotification: true,
-        type: "success",
-        message: "Mensaje desde el axios",
+        type: null,
+        message: null,
         errors_response: []
       };
-
-      commit("setNotification", notification);
-
-      // let res = await this.$axios.post(`${process.env.API_URL}/customer`, data);
-      // if (res.status === 200) {
-      //   commit("setNotification", res.data);
-      // }
+      try {
+        const resp = await this.$axios.post(
+          `${process.env.API_URL}/customer`,
+          data
+        );
+        notification.type = "success";
+        notification.message = resp.data.message;
+        commit("setNotification", notification);
+      } catch (err) {
+        notification.type = "error";
+        notification.errors_response = err.response.data.errors;
+        commit("setNotification", notification);
+      }
     }
   }
 };

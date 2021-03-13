@@ -21,7 +21,6 @@
     <v-text-field
       v-model="document"
       :counter="10"
-      :rules="documentRules"
       label="Documento"
       required
     ></v-text-field>

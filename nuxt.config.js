@@ -32,7 +32,8 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    "@nuxtjs/vuetify"
+    "@nuxtjs/vuetify",
+    "@nuxtjs/proxy"
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -43,6 +44,10 @@ export default {
     proxyHeaders: false,
     credentials: false
   },
+
+  // proxy: {
+  //   "/api/v1": { target: process.env.API_URL, pathRewrite: { "^/api/v1": "" } }
+  // },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
@@ -64,5 +69,19 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {}
+  build: {
+    extend(config, ctx) {
+      // Run ESLint on save
+      if (ctx.isDev && ctx.isClient) {
+        ["axios"],
+          config.module.rules.push({
+            enforce: "pre",
+            test: /\.(js|vue)$/,
+            //loader: "eslint-loader",
+            // gitloader: 'eslint-loader',
+            exclude: /(node_modules)/
+          });
+      }
+    }
+  }
 };
