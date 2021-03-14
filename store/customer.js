@@ -42,11 +42,12 @@ export default {
           `${process.env.API_URL}/customer`,
           data
         );
-        notification.type = "success";
+        notification.type = resp.data.status ? 'success' : 'warning';
         notification.message = resp.data.message;
         commit("setNotification", notification);
       } catch (err) {
         notification.type = "error";
+        notification.message = err.response.data.message;
         notification.errors_response = err.response.data.errors;
         commit("setNotification", notification);
       }

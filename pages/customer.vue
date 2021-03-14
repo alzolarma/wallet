@@ -20,7 +20,6 @@
     <v-text-field
       v-model="name"
       :counter="10"
-      :rules="nameRules"
       label="Nombre"
       required
     ></v-text-field>
@@ -47,14 +46,6 @@
       label="E-mail"
       required
     ></v-text-field>
-
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      @click="validate"
-    >
-      Validar
-    </v-btn>
 
     <v-btn
       color="error"
@@ -136,12 +127,12 @@
         this.notification.message = message;
         this.notification.errors_response = errors;
       },
-      async submit () {
+      submit () {
         if(this.$refs.form.validate()) {
           let data = { 
             name: this.name,
-            document: this.document,
             phone: this.phone,
+            document: this.document,
             email: this.email,
           };
           this.$store.dispatch('customer/store', data);
