@@ -53,24 +53,19 @@ export default {
           to: "/"
         },
         {
-          icon: "mdi-chart-bubble",
-          title: "Registro del Cliente",
-          to: "/customer"
-        },
-        {
-          icon: "mdi-chart-bubble",
+          icon: "mdi-wallet",
           title: "Recargar Billetera",
           to: "/recharge_wallet"
         },
         {
-          icon: "mdi-chart-bubble",
-          title: "Consultar saldo",
-          to: "/balance"
-        },
-        {
-          icon: "mdi-chart-bubble",
+          icon: "mdi-account-cash-outline",
           title: "Pagar",
           to: "/pay_up"
+        },
+        {
+          icon: "mdi-cash-multiple",
+          title: "Consultar saldo",
+          to: "/balance"
         }
       ],
       miniVariant: false,

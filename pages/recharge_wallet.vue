@@ -1,65 +1,71 @@
 <template>
-<div>
+  <v-row justify="center" align="center">
+    <v-col cols="12" sm="8" md="6">
+      <Notification
+        v-if="notification.ifNotification"
+        :type="notification.type"
+        :message="notification.message"
+        :errorsInputs="notification.errors_response"
+      />
+      <v-card>
+        <v-card-title class="headline">
+           Recargar Billetera
+        </v-card-title>
+        <v-card-text>
 
-   <Notification
-    v-if="notification.ifNotification"
-    :type="notification.type"
-    :message="notification.message"
-    :errorsInputs="notification.errors_response"
-  />
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
 
+            <v-divider></v-divider>
 
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
+            <v-text-field
+              v-model="document"
+              :counter="10"
+              :rules="documentRules"
+              label="Documento"
+              required
+            ></v-text-field>
 
-     <h3> Recargar Billetera </h3>
+            <v-text-field
+              v-model="phone"
+              :counter="10"
+              :rules="phoneRules"
+              label="Teléfono"
+              required
+            ></v-text-field>
 
-    <v-divider></v-divider>
+            <v-text-field
+              v-model="mount"
+              :counter="10"
+              :rules="mountRules"
+              label="Monto a recargar"
+              required
+            ></v-text-field>
 
-    <v-text-field
-      v-model="document"
-      :counter="10"
-      :rules="documentRules"
-      label="Documento"
-      required
-    ></v-text-field>
+            <v-btn
+              color="error"
+              @click="reset"
+              :disabled="dialog"
+            >
+              Limpiar
+            </v-btn>
 
-    <v-text-field
-      v-model="phone"
-      :counter="10"
-      :rules="phoneRules"
-      label="Teléfono"
-      required
-    ></v-text-field>
-
-    <v-text-field
-      v-model="mount"
-      :counter="10"
-      :rules="mountRules"
-      label="Monto a recargar"
-      required
-    ></v-text-field>
-
-    <v-btn
-      color="error"
-      @click="reset"
-    >
-      Limpiar
-    </v-btn>
-
-    <v-btn
-      color="primary"
-      @click="submit"
-      :disabled="dialog"
-      :loading="dialog"
-    >
-      Enviar
-    </v-btn>
-  </v-form>
-</div>
+            <v-btn
+              color="primary"
+              @click="submit"
+              :disabled="dialog"
+              :loading="dialog"
+            >
+              Recargar
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -100,6 +106,9 @@
         notification => {
           this.notification = notification;
           this.dialog = false;
+          if(notification.type == 'success') {
+            this.reset();
+          }
         }
       );
     },
@@ -121,8 +130,10 @@
           };
           this.$store.commit('wallet/setData', data);
           this.$store.commit('wallet/setTransaction', {
-            mount: this.mount});
-          this.$store.dispatch('wallet/transaction', { mount : this.mount });
+            mount: this.mount,
+            type : 'credit'
+          });
+          this.$store.dispatch('wallet/transaction');
         }
       }
     }

@@ -1,76 +1,117 @@
 <template>
+  <v-row justify="center" align="center">
+    <v-col cols="12" sm="8" md="6">
+      <Notification
+        v-if="notification.ifNotification"
+        :type="notification.type"
+        :message="notification.message"
+        :errorsInputs="notification.errors_response"
+      />
+      <v-card>
+        <v-card-title class="headline">
+           Pagar
+        </v-card-title>
+        <v-card-text>
 
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
 
-     <h3> Pagar </h3>
+            <v-divider></v-divider>
 
-    <v-divider></v-divider>
+            <v-text-field
+              v-model="document"
+              :counter="15"
+              :rules="documentRules"
+              label="Documento"
+              required
+            ></v-text-field>
 
-    <v-text-field
-      v-model="document"
-      :counter="10"
-      :rules="documentRules"
-      label="Documento"
-      required
-    ></v-text-field>
+            <v-text-field
+              v-model="phone"
+              :counter="15"
+              :rules="phoneRules"
+              label="Teléfono"
+              required
+            ></v-text-field>
 
-    <v-text-field
-      v-model="phone"
-      :counter="10"
-      :rules="phoneRules"
-      label="Teléfono"
-      required
-    ></v-text-field>
+            <v-text-field
+              v-model="mount"
+              :counter="10"
+              :rules="mountRules"
+              label="Monto a pagar"
+              required
+            ></v-text-field>
 
-    <v-text-field
-      v-model="mount"
-      :counter="10"
-      :rules="mountRules"
-      label="Monto a pagar"
-      required
-    ></v-text-field>
+            <v-btn
+              color="error"
+              @click="reset"
+              :disabled="dialog"
+            >
+              Limpiar
+            </v-btn>
 
-    <v-btn
-      color="error"
-      @click="reset"
-    >
-      Limpiar
-    </v-btn>
-
-    <v-btn
-      color="primary"
-      @click="submit"
-    >
-      Realizar pago
-    </v-btn>
-  </v-form>
+            <v-btn
+              color="primary"
+              @click="submit"
+              :disabled="dialog"
+              :loading="dialog"
+            >
+              Pagar
+            </v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
+  import Notification from '~/components/utils/Notification.vue'
+
   export default {
     data: () => ({
       valid: true,
-      phone: '',
+      phone: '341',
       phoneRules: [
         v => !!v || 'Phone is required',
-        v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
+        v => (v && v.length <= 15) || 'Phone must be less than 15 characters'
       ],
-      mount: '',
-      mpountRules: [
+      mount: '100',
+      mountRules: [
         v => !!v || 'Monto is required',
         v => (v && v.length <= 10) || 'Document must be less than 10 characters'
       ],
-      document: '',
+      document: '343434',
       documentRules: [
         v => !!v || 'Document is required',
-        v => (v && v.length <= 10) || 'Document must be less than 10 characters'
+        v => (v && v.length <= 15) || 'Document must be less than 15 characters'
       ],
+      notification: {
+        ifNotification: false,
+        type: '',
+        message: '',
+        errors_response:null
+      },
+      dialog: false,
     }),
-
+    components: {
+      Notification,
+    },
+    mounted() {
+      this.$store.watch(
+        state => state.wallet.notification,
+        notification => {
+          this.notification = notification;
+          this.dialog = false;
+          if(notification.type == 'success') {
+            this.reset();
+          }
+        }
+      );
+    },
     methods: {
       validate () {
         if (this.$refs.form.validate()) {
@@ -81,7 +122,19 @@
         this.$refs.form.reset()
       },
       submit () {
-        this.$refs.form.submit()
+        if(this.$refs.form.validate()) {
+          this.dialog = true;
+          let data = { 
+            document: this.document,
+            phone: this.phone,
+          };
+          this.$store.commit('wallet/setData', data);
+          this.$store.commit('wallet/setTransaction', {
+            mount: this.mount,
+            type : 'debit'
+          });
+          this.$store.dispatch('wallet/transaction');
+        }
       }
     }
   }

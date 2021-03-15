@@ -1,12 +1,15 @@
 export default {
   state: {
     data: {
-      phone: "null",
-      document: null,
-      pay: null
+      phone: null,
+      document: null
+    },
+    balance: {
+      value: null
     },
     transaction: {
-      mount: null
+      mount: null,
+      type: null
     },
     created: false,
     notification: {
@@ -30,29 +33,26 @@ export default {
     setCreated(state, data) {
       state.created = data;
     },
-    setPay(state, data) {
-      state.pay = data;
+    setBalance(state, data) {
+      state.balance = data;
     }
   },
 
   actions: {
-    async transaction({ commit }, data) {
+    async transaction({ commit }) {
       let notification = {
         ifNotification: true,
         type: "success",
         message: "",
         errors_response: []
       };
-
-      commit("setNotification", notification);
-
       try {
         const resp = await this.$axios.post(
           `${process.env.API_URL}/transaction`,
           {
             phone: this.state.wallet.data.phone,
             document: this.state.wallet.data.document,
-            type: "credit",
+            type: this.state.wallet.transaction.type,
             mount: this.state.wallet.transaction.mount
           }
         );
@@ -81,14 +81,16 @@ export default {
         );
         notification.type = resp.data.status ? "success" : "error";
         notification.message = resp.data.message;
-        commit("setData", resp.data.data);
+        if (resp.data.status) {
+          commit("setBalance", { value: resp.data.data });
+        }
         commit("setNotification", notification);
       } catch (err) {
         notification.type = "error";
         notification.message = err.response.data.message;
         notification.errors_response = err.response.data.errors;
         commit("setNotification", notification);
-        commit("setPay", null);
+        commit("setBalance", null);
       }
     }
   }

@@ -1,71 +1,76 @@
 <template>
-<div>
+ <v-row justify="center" align="center">
+    <v-col cols="12" sm="10" md="10">
+      <Notification
+        v-if="notification.ifNotification"
+        :type="notification.type"
+        :message="notification.message"
+        :errorsInputs="notification.errors_response"
+      />
+      <v-card>
+        <v-card-title class="headline">
+           Consultar Saldo
+        </v-card-title>
+        <v-card-text>
+            <v-layout row >
+              <v-flex xs12 sm12 md6 lg6 xl6 pa-3>
+                <v-form
+                  ref="form"
+                  v-model="valid"
+                  lazy-validation
+                >
 
-    <Notification
-    v-if="notification.ifNotification"
-    :type="notification.type"
-    :message="notification.message"
-    :errorsInputs="notification.errors_response"
-  />
+                  <v-divider></v-divider>
 
-  <v-layout row >
-    <v-flex xs12 sm12 md6 lg6 xl6 pa-3>
-      <v-form
-        ref="form"
-        v-model="valid"
-        lazy-validation
-      >
+                  <v-text-field
+                    v-model="document"
+                    :counter="10"
+                    label="Documento"
+                    required
+                  ></v-text-field>
 
-        <h3> Consultar Saldo </h3>
+                  <v-text-field
+                    v-model="phone"
+                    :counter="10"
+                    :rules="phoneRules"
+                    label="Teléfono"
+                    required
+                  ></v-text-field>
 
-        <v-divider></v-divider>
+                  <v-btn
+                    color="error"
+                    :disabled="dialog"
+                    @click="reset"
+                  >
+                    Limpiar
+                  </v-btn>
 
-        <v-text-field
-          v-model="document"
-          :counter="10"
-          label="Documento"
-          required
-        ></v-text-field>
-
-        <v-text-field
-          v-model="phone"
-          :counter="10"
-          :rules="phoneRules"
-          label="Teléfono"
-          required
-        ></v-text-field>
-
-        <v-btn
-          color="error"
-          :disabled="dialog"
-          @click="reset"
-        >
-          Limpiar
-        </v-btn>
-
-        <v-btn
-          color="primary"
-          @click="submit"
-          :disabled="dialog"
-          :loading="dialog"
-        >
-          Consultar saldo
-        </v-btn>
-      </v-form>
-    </v-flex>
-    <v-flex xs12 sm12 md6 lg6 xl6 pa-3>
-        <v-progress-linear :indeterminate="dialog"></v-progress-linear>
-        <v-card>
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline mb-0">Saldo disponible</h3>
-              <div> {{ pay }} </div>
-            </div>
-          </v-card-title>
-        </v-card>
-    </v-flex>
-  </v-layout>
-</div>
+                  <v-btn
+                    color="primary"
+                    @click="submit"
+                    :disabled="dialog"
+                    :loading="dialog"
+                  >
+                    Consultar saldo
+                  </v-btn>
+                </v-form>
+              </v-flex>
+              <v-flex xs12 sm12 md6 lg6 xl6 pa-3>
+                  <v-progress-linear :indeterminate="dialog"></v-progress-linear>
+                  <v-card>
+                    <v-card-title primary-title>
+                      <div>
+                        <h3 class="headline mb-0">Saldo disponible</h3>
+                        <div> {{ pay }} </div>
+                      </div>
+                    </v-card-title>
+                  </v-card>
+              </v-flex>
+            </v-layout>
+        </v-card-text>
+      </v-card>
+    </v-col>
+ </v-row>
 </template>
 
 <script>
@@ -111,9 +116,11 @@
         }
       );
       this.$store.watch(
-        state => state.wallet.data,
+        state => state.wallet.balance,
         data => {
-          this.pay = data.pay;
+          if(data) {
+            this.pay = data.value;
+          }
         }
       );
     },

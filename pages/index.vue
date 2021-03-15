@@ -1,34 +1,157 @@
 <template>
   <v-row justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
+      <Notification
+        v-if="notification.ifNotification"
+        :type="notification.type"
+        :message="notification.message"
+        :errorsInputs="notification.errors_response"
+      />
       <v-card>
         <v-card-title class="headline">
-          Test Wallet
+           Registrar Usuario 
         </v-card-title>
         <v-card-text>
+            <v-form
+              ref="form"
+              v-model="valid"
+              lazy-validation
+            >
+              <v-divider></v-divider>
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                :counter="10"
+                label="Nombre"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                v-model="document"
+                :counter="15"
+                :rules="documentRules"
+                label="Documento"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                v-model="phone"
+                :counter="15"
+                :rules="phoneRules"
+                label="Teléfono"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                label="E-mail"
+                required
+              ></v-text-field>
+            </v-form>
+            <v-btn
+              color="error"
+              @click="reset"
+              :disabled="dialog"
+            >
+              Limpiar
+            </v-btn>
+
+            <v-btn
+              color="primary"
+              @click="submit"
+              :disabled="dialog"
+              :loading="dialog"
+            >
+              Enviar
+            </v-btn>
         </v-card-text>
-        <v-card-actions class="text-center">
-          <v-btn
-            color="primary"
-            nuxt
-            to="/customer"
-          >
-            Iniciar agregando un nuevo usuario
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import Notification from '~/components/utils/Notification.vue'
+
 
 export default {
-  components: {
-    Logo,
-    VuetifyLogo
-  }
+
+  data: () => ({
+      valid: true,
+      name: 'maria',
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+      ],
+      phone: '042455566',
+      phoneRules: [
+        v => !!v || 'Phone is required',
+        v => (v && v.length <= 15) || 'Phone must be less than 15 characters'
+      ],
+      document: '454545',
+      documentRules: [
+        v => !!v || 'Document is required',
+        v => (v && v.length <= 15) || 'Document must be less than 15 characters'
+      ],
+      email: 'alzolarma@gmail.com',
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+/.test(v) || 'E-mail must be valid'
+      ],
+      dialog: false,
+      notification: {
+        ifNotification: false,
+        type: '',
+        message: '',
+        errors_response:null
+      },
+    }),
+
+    components: {
+      Notification,
+    },
+    mounted() {
+      this.$store.watch(
+        state => state.customer.notification,
+        notification => {
+          this.notification = notification;
+          this.dialog = false;
+          if(notification.type == 'success') {
+            this.reset();
+          }
+        }
+      )
+    },
+    methods: {
+      validate () {
+        if (this.$refs.form.validate()) {
+          this.snackbar = true;
+          return true;
+        }
+        return false;
+      },
+      reset () {
+        this.$refs.form.reset()
+      },
+      setNotification(visibility, type, message, errors) {
+        this.notification.ifNotification = visibility;
+        this.notification.type = type;
+        this.notification.message = message;
+        this.notification.errors_response = errors;
+      },
+      submit () {
+        if(this.$refs.form.validate()) {
+          this.dialog = true;
+          let data = { 
+            name: this.name,
+            phone: this.phone,
+            document: this.document,
+            email: this.email,
+          };
+          this.$store.dispatch('customer/store', data);
+        }
+      }
+    }
 }
 </script>
