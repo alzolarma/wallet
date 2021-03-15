@@ -79,12 +79,12 @@
   export default {
     data: () => ({
       valid: true,
-      phone: '34',
+      phone: '',
       phoneRules: [
         v => !!v || 'Phone is required',
         v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
       ],
-      document: '34',
+      document: '',
       documentRules: [
         v => !!v || 'Document is required',
         v => (v && v.length <= 10) || 'Document must be less than 10 characters'

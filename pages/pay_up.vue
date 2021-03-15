@@ -74,17 +74,17 @@
   export default {
     data: () => ({
       valid: true,
-      phone: '341',
+      phone: '',
       phoneRules: [
         v => !!v || 'Phone is required',
         v => (v && v.length <= 15) || 'Phone must be less than 15 characters'
       ],
-      mount: '100',
+      mount: '',
       mountRules: [
         v => !!v || 'Monto is required',
         v => (v && v.length <= 10) || 'Document must be less than 10 characters'
       ],
-      document: '343434',
+      document: '',
       documentRules: [
         v => !!v || 'Document is required',
         v => (v && v.length <= 15) || 'Document must be less than 15 characters'

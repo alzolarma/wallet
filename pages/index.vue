@@ -79,22 +79,22 @@ export default {
 
   data: () => ({
       valid: true,
-      name: 'maria',
+      name: '',
       nameRules: [
         v => !!v || 'Name is required',
         v => (v && v.length <= 10) || 'Name must be less than 10 characters'
       ],
-      phone: '042455566',
+      phone: '',
       phoneRules: [
         v => !!v || 'Phone is required',
         v => (v && v.length <= 15) || 'Phone must be less than 15 characters'
       ],
-      document: '454545',
+      document: '',
       documentRules: [
         v => !!v || 'Document is required',
         v => (v && v.length <= 15) || 'Document must be less than 15 characters'
       ],
-      email: 'alzolarma@gmail.com',
+      email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+/.test(v) || 'E-mail must be valid'
