@@ -49,18 +49,18 @@ export default {
       items: [
         {
           icon: "mdi-apps",
-          title: "Welcome",
+          title: "Home",
           to: "/"
         },
         {
           icon: "mdi-wallet",
           title: "Recargar Billetera",
-          to: "/recharge_wallet"
+          to: "/wallet"
         },
         {
           icon: "mdi-account-cash-outline",
           title: "Pagar",
-          to: "/pay_up"
+          to: "/payment"
         },
         {
           icon: "mdi-cash-multiple",

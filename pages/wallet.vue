@@ -76,18 +76,18 @@
       valid: true,
       phone: '',
       phoneRules: [
-        v => !!v || 'Phone is required',
-        v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
+        v => !!v || 'Teléfono es requerido',
+        v => (v && v.length <= 15) || 'Teléfono debe ser menos de 15 caracteres'
       ],
       mount: '',
       mountRules: [
-        v => !!v || 'Monto is required',
-        v => (v && v.length <= 10) || 'Document must be less than 10 characters'
+        v => !!v || 'Monto es requerido',
+        v => (v && v.length <= 10) || 'Monto debe ser menos de 10 caracteres'
       ],
       document: '',
       documentRules: [
-        v => !!v || 'Document is required',
-        v => (v && v.length <= 10) || 'Document must be less than 10 characters'
+        v => !!v || 'Documento es requerido',
+        v => (v && v.length <= 15) || 'Documento debe ser menos de 15 caracteres'
       ],
       notification: {
         ifNotification: false,

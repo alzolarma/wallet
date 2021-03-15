@@ -24,14 +24,15 @@
 
                   <v-text-field
                     v-model="document"
-                    :counter="10"
+                    :rules="documentRules"
+                    :counter="15"
                     label="Documento"
                     required
                   ></v-text-field>
 
                   <v-text-field
                     v-model="phone"
-                    :counter="10"
+                    :counter="15"
                     :rules="phoneRules"
                     label="Teléfono"
                     required
@@ -81,13 +82,13 @@
       valid: true,
       phone: '',
       phoneRules: [
-        v => !!v || 'Phone is required',
-        v => (v && v.length <= 10) || 'Phone must be less than 10 characters'
+        v => !!v || 'Teléfono es requerido',
+        v => (v && v.length <= 15) || 'Teléfono debe ser menos de 15 caracteres'
       ],
       document: '',
       documentRules: [
-        v => !!v || 'Document is required',
-        v => (v && v.length <= 10) || 'Document must be less than 10 characters'
+        v => !!v || 'Documento es requerido',
+        v => (v && v.length <= 15) || 'Documento debe ser menos de 15 caracteres'
       ],
       notification: {
         ifNotification: false,
@@ -101,12 +102,6 @@
     components: {
       Notification,
     },
-    // watch: {
-    //   dialog (val) {
-    //     if (!val) return
-    //     setTimeout(() => (this.dialog = false), 4000)
-    //   }
-    // },
     mounted() {
       this.$store.watch(
         state => state.wallet.notification,

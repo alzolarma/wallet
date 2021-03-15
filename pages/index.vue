@@ -81,23 +81,23 @@ export default {
       valid: true,
       name: '',
       nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+        v => !!v || 'Nombre es requerido',
+        v => (v && v.length <= 10) || 'Nombre debe ser menos de 10 caracteres'
       ],
       phone: '',
       phoneRules: [
-        v => !!v || 'Phone is required',
-        v => (v && v.length <= 15) || 'Phone must be less than 15 characters'
+        v => !!v || 'Teléfono es requerido',
+        v => (v && v.length <= 15) || 'Teléfono debe ser menos de 15 caracteres'
       ],
       document: '',
       documentRules: [
-        v => !!v || 'Document is required',
-        v => (v && v.length <= 15) || 'Document must be less than 15 characters'
+        v => !!v || 'Documento es requerido',
+        v => (v && v.length <= 15) || 'Documento debe ser menos de 15 caracteres'
       ],
       email: '',
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+/.test(v) || 'E-mail must be valid'
+        v => !!v || 'E-mail es requerido',
+        v => /.+@.+/.test(v) || 'E-mail debe ser válido'
       ],
       dialog: false,
       notification: {

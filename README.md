@@ -3,14 +3,20 @@
 ## Build Setup
 
 ```bash
-# install dependencies
+# Instalar las dependencias
 $ npm install
 
-# serve with hot reload at localhost:3000
+# Ejecutar servidor localhost:3000
 $ npm run dev
 
-# generate static project
+# Generar proyecto estatico
 $ npm run generate
+
 ```
+
+
+## Otras configuraciones
+
+### Crear el .env a partir del archivo .env.example
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

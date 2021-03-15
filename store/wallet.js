@@ -102,8 +102,7 @@ export default {
         const resp = await this.$axios.post(
           `${process.env.API_URL}/payment/confirm`,
           {
-            token: token,
-            session: "000"
+            token: token
           }
         );
         notification.type = resp.data.status ? "success" : "warning";
