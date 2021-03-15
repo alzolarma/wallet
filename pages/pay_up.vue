@@ -131,9 +131,8 @@
           this.$store.commit('wallet/setData', data);
           this.$store.commit('wallet/setTransaction', {
             mount: this.mount,
-            type : 'debit'
           });
-          this.$store.dispatch('wallet/transaction');
+          this.$store.dispatch('wallet/paymentRequest');
         }
       }
     }

@@ -67,6 +67,56 @@ export default {
       }
     },
 
+    async paymentRequest({ commit }) {
+      let notification = {
+        ifNotification: true,
+        type: "success",
+        message: "",
+        errors_response: []
+      };
+      try {
+        const resp = await this.$axios.post(`${process.env.API_URL}/payment`, {
+          phone: this.state.wallet.data.phone,
+          document: this.state.wallet.data.document,
+          mount: this.state.wallet.transaction.mount
+        });
+        notification.type = resp.data.status ? "success" : "warning";
+        notification.message = resp.data.message;
+        commit("setNotification", notification);
+      } catch (err) {
+        notification.type = "error";
+        notification.message = err.response.data.message;
+        notification.errors_response = err.response.data.errors;
+        commit("setNotification", notification);
+      }
+    },
+
+    async paymentConfirm({ commit }, token) {
+      let notification = {
+        ifNotification: true,
+        type: "success",
+        message: "",
+        errors_response: []
+      };
+      try {
+        const resp = await this.$axios.post(
+          `${process.env.API_URL}/payment/confirm`,
+          {
+            token: token,
+            session: "000"
+          }
+        );
+        notification.type = resp.data.status ? "success" : "warning";
+        notification.message = resp.data.message;
+        commit("setNotification", notification);
+      } catch (err) {
+        notification.type = "error";
+        notification.message = err.response.data.message;
+        notification.errors_response = err.response.data.errors;
+        commit("setNotification", notification);
+      }
+    },
+
     async balance({ commit }) {
       let notification = {
         ifNotification: true,
